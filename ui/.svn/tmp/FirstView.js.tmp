@@ -1,0 +1,262 @@
+//styles dependencies
+var styles = require('ui/Styles');
+
+//FirstView Component Constructor
+function FirstView() {
+		
+	//a reference to object itself
+	self = this;
+	//create object instance, a parasitic subclass of Observable
+	this.view = Ti.UI.createView();
+	
+	//Adding/Loading Choose Photo Option Dialogs
+	/*var OptionDialog = require('ui/optionDialog');
+	var optionDialog = new OptionDialog();
+	optionDialog.addSelectionListener();*/
+	
+	var startLabel = Titanium.UI.createLabel({
+		color:'#000',
+		width:'auto',
+		height:'auto',
+		text:'Start Here',
+		font:{fontSize:15,fontWeight:'bold',fontFamily:'Helvetica Neue'},
+		top: '40%'
+	});
+	this.view.add(startLabel);
+	
+	
+	var path = Titanium.Filesystem.resourcesDirectory;
+	
+	var cameralRollBtn = Titanium.UI.createButton({
+        backgroundImage:path +'/images/camerarollbtn.png',									            
+	    backgroundSelectedImage:'../images/camerarollbtn-hover.png',
+	    width:50,
+	    height:50,
+	    top: '50%',
+	    left: '25%',
+	    zIndex: 650
+	}); 	
+	this.view.add(cameralRollBtn);
+	
+	
+	var cameralBtn = Titanium.UI.createButton({
+	    backgroundImage:path +'/images/camerabtn.png',									            
+	    backgroundSelectedImage:'../images/camerabtn-hover.png',
+	    width:50,
+	    height:50,
+	    top: '50%',
+	    right: '25%',
+	    zIndex: 650
+	}); 	
+	this.view.add(cameralBtn);
+	
+	
+	var cameraRollLabel = Titanium.UI.createLabel({
+		color:'#000',
+		width:'auto',
+		height:'auto',
+		text:'Camera Roll',
+		font:{fontSize:13,fontWeight:'bold',fontFamily:'Helvetica Neue'},
+		top:'62%',
+		left: '22%'
+	});
+	this.view.add(cameraRollLabel);
+	
+	
+	var cameraLabel = Titanium.UI.createLabel({
+		color:'#000',
+		width:'auto',
+		height:'auto',
+		text:'Camera',
+		font:{fontSize:13,fontWeight:'bold',fontFamily:'Helvetica Neue'},
+		top:'62%',
+		right: '25%'
+	});
+	this.view.add(cameraLabel);
+	
+	var LoadingIndicator = require('ui/LoadingIndicator'); 
+	var loadingIndicator = new LoadingIndicator();
+	loadingIndicator.hide();
+	this.view.add(loadingIndicator);
+	
+	var imageView = Ti.UI.createImageView({
+		//url:ourURL,
+		center:'50%',
+		top:0,
+		width:'100%',
+		height:'73%'
+	});	
+	imageView.hide();
+	this.view.add(imageView);
+
+	
+	cameralRollBtn.addEventListener('click', function(e) {
+		
+		//loadingIndicator.fireEvent('showLoadwithCustomMsg', {txt: 'Loading\ncamera roll...'});
+		//imageView.hide();
+		
+		Titanium.Media.openPhotoGallery({
+			success:function(event)
+			{
+				loadingIndicator.fireEvent('showLoadwithCustomMsg', {txt: 'Loading\nimage...'});
+				var cropRect = event.cropRect;
+				var image = event.media;
+				// set image view
+				Ti.API.info('Our type was: '+event.mediaType);
+				if(event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO)
+				{
+					
+					imageView.image = image;	
+					imageView.show();			
+					
+				}
+				else
+				{
+					// is this necessary?
+					
+				}
+		
+				//Ti.API.info('PHOTO GALLERY SUCCESS cropRect.x ' + cropRect.x + ' cropRect.y ' + cropRect.y  + ' cropRect.height ' + cropRect.height + ' cropRect.width ' + cropRect.width);
+				
+				
+			},
+			cancel:function() {},
+			error:function(error)
+			{
+				// create alert
+				var a = Titanium.UI.createAlertDialog({title:'Camera'});		
+				// set message
+				if (error.code == Titanium.Media.NO_CAMERA) {
+					a.setMessage('Device does not have video recording capabilities');
+				} else {
+					a.setMessage('Unexpected error: ' + error.code);
+				}		
+				a.show();											
+			},
+			allowEditing:false,
+			mediaTypes:[Ti.Media.MEDIA_TYPE_VIDEO,Ti.Media.MEDIA_TYPE_PHOTO]
+			
+			
+		});
+				
+	});
+	
+	
+	//Adding/Loading Choose Photo button
+	/*var ChoosePhoto = require('ui/ChoosePhotoButton');
+	var choosePhoto = new ChoosePhoto();	
+	this.view.add(choosePhoto.getButton());
+	choosePhoto.addEventListener('click', function(e) {
+		optionDialog.open();
+	});*/
+	
+	//Adding/Loading Image View and Photo/Camera Selection Actions
+	/*this.imageView = Titanium.UI.createImageView({
+			height:300,
+			width:300,
+			top:65,
+			left:10,
+			borderRadius:5,		
+			image:'KS_nav_views.png',
+			backgroundGradient:{
+			type:'linear',
+			colors:[{color:styles.customBtnBGColor,position:0.0},{color:styles.customBtnBGColorGradient,position:0.50},{color:styles.customBtnBGColor,position:1.0}]
+		}		
+	});		
+	this.view.add(this.imageView);	*/
+	
+	//Adding event listener for choose photo methods
+	/*var _imageView = this.imageView;
+	Ti.App.addEventListener('gallery.selected', function(){
+	   choosePhoto.gallerySelectPhoto(_imageView); 
+	}); 
+	Ti.App.addEventListener('camera.selected', function(){
+		choosePhoto.cameraPhoto(_imageView);		
+	});*/
+	
+<<<<<<< .mine
+	//Adding facebook API calls
+	/*var Facebook = require('ui/Facebook');
+	var facebook = new Facebook();
+=======
+	this.uploadButton = Ti.UI.createView({
+		height:35,
+		width:120,
+		top:400,
+		left:190,
+		borderRadius:5,
+		backgroundGradient:{
+			type:'linear',
+			colors:[{color:styles.customBtnBGColor,position:0.0},{color:styles.customBtnBGColorGradient,position:0.50},{color:styles.customBtnBGColor,position:1.0}]
+		}		
+	});
+>>>>>>> .r141
+	
+	var uploadLabel = Titanium.UI.createLabel({
+		color: styles.customLabelColor,
+		width:'auto',
+		height:'auto',
+		text:'Upload',
+		font: styles.customLabelFont
+	});
+		
+	this.uploadButton.add(uploadLabel);
+	
+	this.view.add(this.uploadButton);
+	
+		
+	
+	this.uploadButton.addEventListener('click', function(){
+		//facebook.uploadToFacebook(_imageView.image);		
+				
+		Ti.App.fireEvent('upload.click', {imageView:_imageView.image});
+		
+	});	
+	
+<<<<<<< .mine
+	this.loader = Titanium.UI.createActivityIndicator({
+			bottom:40, 
+			height:50,
+			width:10,
+			style:Titanium.UI.iPhone.ActivityIndicatorStyle.DARK
+	});				
+	
+	
+	this.view.add(this.loader);	
+	
+	Ti.App.addEventListener('facebook.api.start', function(){
+		facebook.getUploadButton().hide();
+		self.getLoader().show();		
+	});
+	
+	Ti.App.addEventListener('facebook.api.end', function(){
+		self.getLoader().hide();
+		facebook.getUploadButton().show();
+	});	*/
+	
+=======
+		
+>>>>>>> .r141
+}
+
+FirstView.prototype.getView = function()
+{
+	return this.view;	
+	
+} 
+
+FirstView.prototype.getLoader = function()
+{
+			
+	return this.loader;	
+}
+
+
+module.exports = FirstView;
+
+
+
+
+
+
+

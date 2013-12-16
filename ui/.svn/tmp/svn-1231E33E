@@ -1,0 +1,25 @@
+//Application Window Component Constructor
+function ApplicationWindow() {
+	//load component dependencies
+	var FirstView = require('ui/FirstView');
+		
+	//create component instance
+	var self = Ti.UI.createWindow({
+		/*backgroundGradient:{
+			type:'linear',
+			colors:[{color:'#1B6320',position:0.0},{color:'#16521A',position:0.50},{color:'#1B6320',position:1.0}]
+		},*/
+		backgroundImage:'Default.png',
+		navBarHidden:true,
+		exitOnClose:true
+	});
+		
+	//construct UI
+	var firstView = new FirstView();
+	self.add(firstView.getView());
+	
+	return self;
+}
+
+//make constructor function the public component interface
+module.exports = ApplicationWindow;

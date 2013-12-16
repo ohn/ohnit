@@ -1,0 +1,64 @@
+//styles dependencies
+var styles = require('ui/Styles');
+
+//Application Window Component Constructor
+function ApplicationWindows() {
+	//load component dependencies
+	var FirstView = require('ui/FirstView');
+	var SecondView = require('ui/SecondView');
+		
+	var self = this;
+	//create component instance
+	this.defaultWin = Ti.UI.createWindow({
+		/*backgroundGradient:{
+			type:'linear',
+			colors:[{color:styles.winBGColor,position:0.0},{color:styles.winBGColorGradient,position:0.50},{color:styles.winBGColor,position:1.0}]
+		},*/
+		backgroundImage:'Default.png',
+		title:'Select A Photo',
+		navBarHidden:true,
+		exitOnClose:false
+	});
+		
+	//default construct UI
+	var firstView = new FirstView();
+	this.defaultWin.add(firstView.getView());
+	
+	//second window - platform selector
+	this.selectPlatformWin = Ti.UI.createWindow({
+		backgroundGradient:{
+			type:'linear',
+			colors:[{color:styles.winBGColor,position:0.0},{color:styles.winBGColorGradient,position:0.50},{color:styles.winBGColor,position:1.0}]
+		},
+		navBarHidden:true,
+		exitOnClose:false
+	});
+	var secondView = new SecondView();
+	this.selectPlatformWin.add(secondView.getView());
+	Ti.App.addEventListener('upload.click', function (data){
+	   self.selectPlatformWin.open({modal:true,modalTransitionStyle:Ti.UI.iPhone.MODAL_TRANSITION_STYLE_FLIP_HORIZONTAL,modalStyle:Ti.UI.iPhone.MODAL_PRESENTATION_FULLSCREEN});
+	});
+	
+	Ti.App.addEventListener('secondview.back', function (data){
+	   self.selectPlatformWin.close({});
+	});
+	
+	
+	
+		
+}
+
+ApplicationWindows.prototype.getDefaultWin = function()
+{
+	return this.defaultWin;	
+	
+}
+
+ApplicationWindows.prototype.selectPlatformWin = function()
+{
+	return this.selectPlatformWin;	
+	
+}
+
+//make constructor function the public component interface
+module.exports = ApplicationWindows;
